@@ -59,8 +59,10 @@ function log(thisContext: any, text: string, logLevel: string) {
 
   const stepLog = `${stepPrefix}${text}`
 
-  if (thisContext instanceof QwaSteps && thisContext._utils.logger)
+  if (thisContext instanceof QwaSteps && thisContext._utils.logger) {
+    // @ts-ignore
     thisContext._utils.logger[logLevel](stepLog)
+  }
 }
 
 function getQwaParentName(args: any): string {

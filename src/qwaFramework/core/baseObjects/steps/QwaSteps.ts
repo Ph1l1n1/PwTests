@@ -41,6 +41,7 @@ export default class QwaSteps {
   /**
    * Page steps
    */
+  // @ts-ignore
   @step('Переход по страницу: {0}')
   private async _goTo(name: string, page: QwaPage): Promise<void> {
     await page.goToPage(page)
@@ -52,6 +53,7 @@ export default class QwaSteps {
     return this
   }
 
+  // @ts-ignore
   @step('Ожидание страницы: {0}')
   private async _waitForLoadPage(name: string, page: QwaPage): Promise<void> {
     //this._utils.logger?.info(`--URL:${await page._pwPage.url()}`)
@@ -59,95 +61,75 @@ export default class QwaSteps {
   }
 
   public waitForLoadPage(page: QwaPage): QwaSteps {
-    this.asyncFunctions.push(
-      async () => await this._waitForLoadPage(page.name, page)
-    )
+    this.asyncFunctions.push(async () => await this._waitForLoadPage(page.name, page))
     return this
   }
 
   /**
    * Element steps
    */
+  // @ts-ignore
   @step('Клик на элемент: {0}')
   private async _click(name: string, element: QwaElement): Promise<void> {
     await element.click()
   }
 
   public click(element: QwaElement): QwaSteps {
-    this.asyncFunctions.push(
-      async () => await this._click(element.name, element)
-    )
+    this.asyncFunctions.push(async () => await this._click(element.name, element))
     return this
   }
 
+  // @ts-ignore
   @step('Ожидание элемента: {0}')
   private async _waitForLoad(name: string, element: QwaElement): Promise<void> {
     await element.isVisible()
   }
 
   public waitForLoad(element: QwaElement): QwaSteps {
-    this.asyncFunctions.push(
-      async () => await this._waitForLoad(element.name, element)
-    )
+    this.asyncFunctions.push(async () => await this._waitForLoad(element.name, element))
     return this
   }
 
+  // @ts-ignore
   @step('Ожидание отсутствия элемента: {0}')
-  private async _waitNotDispayed(
-    name: string,
-    element: QwaElement
-  ): Promise<void> {
+  private async _waitNotDispayed(name: string, element: QwaElement): Promise<void> {
     const locator = element._pwPage?.locator(element.locator) as Locator
     await locator.waitFor({ state: 'detached' })
   }
 
   public waitNotDispayed(element: QwaElement): QwaSteps {
-    this.asyncFunctions.push(
-      async () => await this._waitNotDispayed(element.name, element)
-    )
+    this.asyncFunctions.push(async () => await this._waitNotDispayed(element.name, element))
     return this
   }
 
+  // @ts-ignore
   @step('Заполяется поле: {0} значением {1}')
-  private async _fillField(
-    name: string,
-    value: string,
-    element: QwaElement
-  ): Promise<void> {
+  private async _fillField(name: string, value: string, element: QwaElement): Promise<void> {
     await element.input(value)
   }
 
-  public fillField(element: QwaElement, value: string): QwaSteps {
-    this.asyncFunctions.push(
-      async () => await this._fillField(element.name, value, element)
-    )
+  public fillField(element: QwaElement, value: string | number): QwaSteps {
+    this.asyncFunctions.push(async () => await this._fillField(element.name, String(value), element))
     return this
   }
 
   /**
    * Check steps
    */
+  // @ts-ignore
   @step('Проверка наличия элемента: {0} на странице: {1}')
-  private async _checkElementIsVisible(
-    name: string,
-    qwaParentName: string,
-    element: QwaElement
-  ): Promise<void> {
+  private async _checkElementIsVisible(name: string, qwaParentName: string, element: QwaElement): Promise<void> {
     expect(await element.isVisible(), '').toBe(true)
   }
 
   public checkElementIsVisible(element: QwaElement): QwaSteps {
     this.asyncFunctions.push(
-      async () =>
-        await this._checkElementIsVisible(
-          element.name,
-          getQwaParentNameForLog(element),
-          element
-        )
+      async () => await this._checkElementIsVisible(element.name, getQwaParentNameForLog(element), element)
     )
     return this
   }
 
+  // @ts-ignore
   @step('Проверка наличия текста {2} у элемента: {0} на странице {1}')
   private async _checkTextFromElement(
     name: string,
@@ -158,18 +140,22 @@ export default class QwaSteps {
     await this.expect(await element.getLocator()).toHaveText(expectedValue)
   }
 
-  public checkTextFromElement(
-    element: QwaElement,
-    value: string | number
-  ): QwaSteps {
+  public checkTextFromElement(element: QwaElement, value: string | number): QwaSteps {
     this.asyncFunctions.push(
       async () =>
-        await this._checkTextFromElement(
-          element.name,
-          getQwaParentNameForLog(element),
-          String(value),
-          element
-        )
+        await this._checkTextFromElement(element.name, getQwaParentNameForLog(element), String(value), element)
+    )
+    return this
+  }
+
+  @step('Проверка наличия отправленного запроса по адресу: {0}')
+  private async _checkRequestExist(url: RegExp | String, requestPostData: {}): Promise<void> {
+    // code for expect
+  }
+
+  public checkRequestExist(url: RegExp | String, requestPostData: {}): QwaSteps {
+    this.asyncFunctions.push(
+      async () => await this._checkRequestExist(url, requestPostData)
     )
     return this
   }
@@ -177,6 +163,7 @@ export default class QwaSteps {
   /**
    * Tech steps
    */
+  // @ts-ignore
   @step('--- TEST PAUSE - NEED TO DELETE !!! --- ')
   private async _pause(name: string, page: QwaPage): Promise<void> {
     await page._pwPage.pause()
@@ -187,19 +174,14 @@ export default class QwaSteps {
     return this
   }
 
+  // @ts-ignore
   @step(`Ожидание таймаута {0}`)
-  private async _waitTimeout(
-    name: string,
-    page: QwaPage,
-    timeout: number
-  ): Promise<void> {
+  private async _waitTimeout(name: string, page: QwaPage, timeout: number): Promise<void> {
     await page._pwPage.waitForTimeout(timeout)
   }
 
   public waitTimeout(page: QwaPage, timeout: number): QwaSteps {
-    this.asyncFunctions.push(
-      async () => await this._waitTimeout(page.name, page, timeout)
-    )
+    this.asyncFunctions.push(async () => await this._waitTimeout(page.name, page, timeout))
     return this
   }
 
@@ -217,8 +199,7 @@ export default class QwaSteps {
 
   // todo rename to __
   public async runs(): Promise<void> {
-    const asyncfunc =
-      this.asyncConteinerFunctions[this.asyncConteinerFunctions.length - 1]
+    const asyncfunc = this.asyncConteinerFunctions[this.asyncConteinerFunctions.length - 1]
     try {
       await asyncfunc()
     } catch (e) {
@@ -226,24 +207,17 @@ export default class QwaSteps {
     }
   }
 
+  // @ts-ignore
   @step('{0}')
-  private async _createStep(
-    stepName: string,
-    asyncFunction: () => Promise<void>
-  ): Promise<void> {
+  private async _createStep(stepName: string, asyncFunction: () => Promise<void>): Promise<void> {
     const spaces = '    '
     this._utils.stepPrefix += spaces
     await asyncFunction()
     this._utils.stepPrefix = this._utils.stepPrefix?.replace(spaces, '')
   }
 
-  public createStep(
-    stepName: string,
-    asyncFunction: () => Promise<void>
-  ): QwaSteps {
-    this.asyncConteinerFunctions.push(
-      async () => await this._createStep(stepName, asyncFunction)
-    )
+  public createStep(stepName: string, asyncFunction: () => Promise<void>): QwaSteps {
+    this.asyncConteinerFunctions.push(async () => await this._createStep(stepName, asyncFunction))
     return this
   }
 }

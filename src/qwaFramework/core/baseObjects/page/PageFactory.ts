@@ -4,14 +4,6 @@ import Log from '../Log'
 
 /**
  * @description Фабрика страниц POM с установленной _pwPage
- * @example:
- *    const pageFactory = new PageFactory(page);
- *    // @ts-ignore
- *     const testPage1: TestPage = pageFactory.add(
- *       TestPage,
- *       'Тестовая страница',
- *       'https://data.fundraiseup.com/qa-test-7R58U3/',
- *     );
  */
 export default class PageFactory<T> {
   public _pwPage: Page
@@ -24,7 +16,7 @@ export default class PageFactory<T> {
     this._logger = _logger
   }
 
-  public add<C extends { new (...args: any[]): T }>(
+  public get<C extends { new (...args: any[]): T }>(
     pageClass: C,
     ...args: ConstructorParameters<C>
   ): T {

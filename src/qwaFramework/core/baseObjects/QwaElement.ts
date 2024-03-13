@@ -5,12 +5,9 @@ import Log from './Log'
 export type QwaParent = QwaPage | QwaElement
 
 /**
- * @description Класс служит для описания базовых действий с QwaElement
- * Наследовав функционал QwaElement можно создавать свои классы элементов со своими действиями,
+ * @description Класс служит для описания базовых действий с элементом на странице.
+ * Наследовав функционал QwaElement, можно создавать свои классы элементов со своими действиями,
  * присуще только конкретной группе элементов.
- * Пример "селектор": на ozon.ru для выбора категории из каталога,
- * в селекторе можно будет сосредоточить несколько мелких шагов, чтобы их не выносить на уровень бизнес логики теста.
- *
  * !!! Создавать свои элементы рекомендуется для частых и наиболее переиспользуемых элементов,
  * которые присутствуют на множестве страниц и имеют одинаковый паттерн поведения
  */
@@ -34,19 +31,24 @@ export default class QwaElement {
 
   protected getVariableFromQwaParent<T>(name: string): T {
     const _name = `_${name}`
+    // @ts-ignore
     if (this[_name] === null && this.qwaParent) {
       if (this.qwaParent instanceof QwaElement) {
+        // @ts-ignore
         this[_name] = this.qwaParent[name]
       } else {
+        // @ts-ignore
         this[_name] = this.qwaParent[_name]
       }
     }
+    // @ts-ignore
     return this[_name]
   }
 
   protected async findElementInIframe(): Promise<Locator> {
-    const page = this.pwPage
+    const page: Page = this.pwPage
     const start = Date.now()
+    // @ts-ignore
     const time = page['_timeoutSettings']['_parent']['_defaultTimeout']
 
     try {
