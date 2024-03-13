@@ -1,0 +1,30 @@
+{
+    "compilerOptions": {
+        "types": ["node", "global"],
+        "outDir": "./dist",
+        "target": "es2017",
+        "module": "commonjs",
+        "moduleResolution": "node",
+        "typeRoots": [
+            "./node_modules/@types",
+        ],
+        "rootDir": "./src",
+        "declaration": true,
+        "strict": true,
+        "sourceMap": true,
+        "esModuleInterop": true,
+        "removeComments": true,
+        "emitDecoratorMetadata": true,
+        "experimentalDecorators": true,
+        "paths": {
+            "*": ["node_modules/*"],
+        },
+    },
+
+    "compileOnSave": false,
+    "include": [
+        "./src/**/*",
+        "./tests/**/*",
+    ],
+    "exclude": ["node_modules", "<node_internals>/**", "bin/**"],
+}
